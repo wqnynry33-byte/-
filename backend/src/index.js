@@ -25,6 +25,7 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const adminRoutes = require('./routes/admin');
 const orderRoutes = require('./routes/orders');
+const holidayRoutes = require('./routes/holidays');
 
 const app = express();
 const PORT = process.env.PORT || 5000; // אם אין PORT ב-.env → ברירת מחדל 5000
@@ -61,6 +62,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/holidays', holidayRoutes);
 app.use('/api/admin', adminRoutes);
 
 /**

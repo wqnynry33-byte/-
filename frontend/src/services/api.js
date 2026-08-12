@@ -157,6 +157,11 @@ export const ordersApi = {
   },
 };
 
+// --- Holidays API (Hebcal דרך ה-backend) ---
+export const holidaysApi = {
+  getFeatured: () => request('/holidays/featured'),
+};
+
 // עיצוב מחיר בשקלים (Intl API מובנה)
 export function formatPrice(price) {
   return new Intl.NumberFormat('he-IL', {
