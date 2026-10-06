@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CATEGORIES } from '../constants/categories';
 import { useAuth } from '../context/AuthContext';
 import { adminApi, formatPrice } from '../services/api';
@@ -72,6 +72,16 @@ export default function AdminPage() {
   useEffect(() => {
     loadTabData(tab);
   }, [tab]);
+
+  const availableColors = useMemo(() => {
+    const colors = products.map((product) => product.color).filter(Boolean);
+    const unique = [...new Set(colors)].sort((a, b) => a.localeCompare(b, 'he'));
+    // אם עורכים מוצר עם צבע שלא ברשימה — משאירים אותו כאפשרות
+    if (form.color && !unique.includes(form.color)) {
+      unique.unshift(form.color);
+    }
+    return unique;
+  }, [products, form.color]);
 
   function updateField(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -305,11 +315,18 @@ export default function AdminPage() {
 
             <label className="block">
               <span className="mb-1.5 block text-sm text-stone-600">צבע</span>
-              <input
+              <select
                 value={form.color}
                 onChange={(e) => updateField('color', e.target.value)}
                 className="w-full rounded-xl border border-stone-300 px-3.5 py-2.5 outline-none focus:border-[#3d5c5c] focus:ring-2 focus:ring-[#3d5c5c]/15"
-              />
+              >
+                <option value="">בחרי צבע</option>
+                {availableColors.map((color) => (
+                  <option key={color} value={color}>
+                    {color}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label className="block">
